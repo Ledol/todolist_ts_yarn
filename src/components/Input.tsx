@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent} from 'react';
 
 type InputType = {
     setTitle: (title: string) => void
@@ -13,7 +13,7 @@ export const Input = (props: InputType) => {
     }
 
     const onKeyDownAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter' && event.ctrlKey === true) {
+        if (event.key === 'Enter' && event.ctrlKey) {
             props.callBack()
         }
     }

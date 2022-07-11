@@ -6,3 +6,15 @@
 .App > div {
   margin-right: 50px;
 }
+
+.isDone {
+  font-weight: bold;
+  opacity: 40%;
+  color: lightslategray;
+}
+
+.activeFilter {
+  background-color: darkolivegreen;
+  color: white;
+  font-weight: bold;
+}
