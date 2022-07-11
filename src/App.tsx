@@ -1,27 +1,60 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import TodoList, {TaskType} from "./TodoList";
+import {v1} from "uuid";
+
+export type FilterValuesType = "all" | "active" | "completed"
 
 function App() {
-    const title_1: string = "What to learn"
-    const title_2: string  = "What to buy"
+    //BLL
+    const title: string = "What to learn"
 
-    const tasks_1: Array<TaskType> = [
-        {id: 1, title: "HTML", isDone: true},
-        {id: 2, title: "CSS", isDone: true},
-        {id: 3, title: "JS/ES6", isDone: false},
-    ]
+    const [tasks, setTasks] = useState<Array<TaskType>>([
+        {id: v1(), title: "HTML", isDone: true},
+        {id: v1(), title: "CSS", isDone: true},
+        {id: v1(), title: "JS/ES6", isDone: false},
+    ])
 
-    const tasks_2: Array<TaskType> = [
-        {id: 1, title: "Toushonka", isDone: true},
-        {id: 2, title: "Buckwheat", isDone: true},
-        {id: 3, title: "Sugar", isDone: false},
-    ]
+    const removeTask = (taskID: string): void => {
+        setTasks(tasks.filter(task => task.id !== taskID))
+    }
 
+    const addTask = (title: string) => {
+        const newTask: TaskType = {
+            id: v1(),
+            title: title,
+            isDone: false,
+        }
+        setTasks([newTask, ...tasks])
+    }
+
+    const [filter, setFilter] = useState<FilterValuesType>("all")
+    let tasksForRender;
+    switch (filter) {
+        case "completed":
+            tasksForRender = tasks.filter(t => t.isDone === true)
+            break
+        case "active":
+            tasksForRender = tasks.filter(t => t.isDone === false)
+            break
+        default:
+            tasksForRender = tasks
+    }
+
+    const changeFilter = (filter: FilterValuesType) => {
+        setFilter(filter)
+    }
+
+    // UI
     return (
         <div className="App">
-            <TodoList title={title_1} tasks={tasks_1}/>
-            <TodoList title={title_2} tasks={tasks_2}/>
+            <TodoList
+                title={title}
+                tasks={tasksForRender}
+                removeTask={removeTask}
+                changeFilter={changeFilter}
+                addTask={addTask}
+            />
         </div>
     );
 }
